@@ -12,14 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: actions/cache@v2
-    - name: Build Jekyll site
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
           ${{ runner.os }}-gems-
     - uses: helaili/jekyll-action@v2    # Choose any one of the Jekyll Actions
-    - name: Publish to GitHub Pages
       with:                                # Some relative inputs of your action
         token: ${{ secrets.GITHUB_TOKEN }}
    
