@@ -11,8 +11,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+    - uses: actions/cache@v2
+    - name: Build Jekyll site
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+    - uses: helaili/jekyll-action@v2    # Choose any one of the Jekyll Actions
+    - name: Publish to GitHub Pages
+      with:                                # Some relative inputs of your action
+        token: ${{ secrets.GITHUB_TOKEN }}
+   
+   
+   
